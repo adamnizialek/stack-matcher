@@ -1,6 +1,12 @@
+import type { Metadata } from "next";
 import { prisma } from "@/lib/prisma";
 import { FeedCard } from "@/components/FeedCard";
 import { AiResponse } from "@/lib/openai";
+
+export const metadata: Metadata = {
+  title: "Community Stacks",
+  description: "Browse and vote on AI-recommended tech stacks shared by the developer community.",
+};
 
 interface Props {
   searchParams: Promise<{ sort?: string }>;
