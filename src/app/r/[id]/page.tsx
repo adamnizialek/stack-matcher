@@ -5,6 +5,7 @@ import { StackCard } from "@/components/StackCard";
 import { VoteButtons } from "@/components/VoteButtons";
 import { AiResponse } from "@/lib/openai";
 import { CopyLinkButton } from "@/components/CopyLinkButton";
+import { MermaidDiagram } from "@/components/MermaidDiagram";
 
 interface Props {
   params: { id: string };
@@ -45,7 +46,10 @@ export default async function RecommendationPage({ params }: Props) {
               Alternatives: {aiResponse.alternatives.join(", ")}
             </p>
           )}
-          <div className="flex items-center justify-between border-t border-zinc-800 pt-4">
+          {aiResponse.diagram && (
+            <MermaidDiagram chart={aiResponse.diagram} />
+          )}
+          <div className="flex items-center justify-between border-t border-zinc-800 pt-4 mt-4">
             <VoteButtons
               recommendationId={recommendation.id}
               initialVotes={recommendation.voteCount}

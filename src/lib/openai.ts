@@ -15,6 +15,7 @@ export interface AiResponse {
   stack: StackItem[];
   summary: string;
   alternatives: string[];
+  diagram: string;
 }
 
 const SYSTEM_PROMPT = `You are a senior software architect. Given a project description, recommend the best tech stack.
@@ -24,9 +25,11 @@ Respond ONLY with valid JSON in this exact format:
     { "name": "Technology", "role": "What it does in this project", "reason": "Why it's the best choice" }
   ],
   "summary": "One paragraph explaining why this stack works well together for this project",
-  "alternatives": ["Alternative1", "Alternative2"]
+  "alternatives": ["Alternative1", "Alternative2"],
+  "diagram": "graph TD; A[Frontend] -->|API calls| B[Backend]; B --> C[Database]"
 }
-Include 3-6 technologies in the stack. Keep reasons concise (1-2 sentences).`;
+Include 3-6 technologies in the stack. Keep reasons concise (1-2 sentences).
+The "diagram" field must be a valid Mermaid.js flowchart showing how the recommended technologies connect in the architecture. Use the actual technology names as node labels. Use graph TD (top-down). Keep it simple: 4-8 nodes max. Do NOT use parentheses inside node labels — use square brackets only.`;
 
 export async function generateStackRecommendation(
   description: string

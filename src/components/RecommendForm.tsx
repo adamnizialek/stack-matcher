@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { StackCard } from "./StackCard";
+import { MermaidDiagram } from "./MermaidDiagram";
 import { AiResponse } from "@/lib/openai";
 
 export function RecommendForm() {
@@ -74,6 +75,9 @@ export function RecommendForm() {
             <p className="text-zinc-500 text-xs">
               Alternatives: {result.aiResponse.alternatives.join(", ")}
             </p>
+          )}
+          {result.aiResponse.diagram && (
+            <MermaidDiagram chart={result.aiResponse.diagram} />
           )}
           <button
             onClick={() => router.push(`/r/${result.id}`)}
