@@ -11,7 +11,7 @@ export async function Navbar() {
         <Link href="/" className="text-base sm:text-lg font-bold text-white tracking-tight ml-2">
           Stack Matcher
         </Link>
-        <div className="flex items-center gap-4 sm:gap-8 text-sm sm:text-base mr-2">
+        <div className="flex items-center gap-2 sm:gap-4 text-sm sm:text-base mr-4">
           <Link href="/feed" className="px-3 py-1 sm:px-4 sm:py-1.5 rounded-full border border-white/10 text-zinc-400 hover:bg-white/5 hover:text-white hover:border-white/20 transition-all">
             Community
           </Link>
