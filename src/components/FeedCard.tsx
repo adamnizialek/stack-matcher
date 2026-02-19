@@ -15,7 +15,7 @@ export function FeedCard({ id, description, aiResponse, voteCount, createdAt }: 
   return (
     <Link
       href={`/r/${id}`}
-      className="block bg-zinc-900 border border-zinc-800 hover:border-zinc-600 rounded-xl p-5 transition-colors"
+      className="block bg-zinc-900 border border-zinc-800 hover:border-zinc-600 rounded-xl p-4 sm:p-5 transition-colors"
     >
       <p className="text-zinc-300 text-sm mb-3 line-clamp-2">&ldquo;{description}&rdquo;</p>
       <div className="flex flex-wrap gap-1.5 mb-3">

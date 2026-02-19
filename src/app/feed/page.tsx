@@ -3,11 +3,12 @@ import { FeedCard } from "@/components/FeedCard";
 import { AiResponse } from "@/lib/openai";
 
 interface Props {
-  searchParams: { sort?: string };
+  searchParams: Promise<{ sort?: string }>;
 }
 
 export default async function FeedPage({ searchParams }: Props) {
-  const sort = searchParams.sort === "top" ? "top" : "latest";
+  const params = await searchParams;
+  const sort = params.sort === "top" ? "top" : "latest";
 
   const recommendations = await prisma.recommendation.findMany({
     orderBy: sort === "top" ? { voteCount: "desc" } : { createdAt: "desc" },
@@ -15,10 +16,10 @@ export default async function FeedPage({ searchParams }: Props) {
   });
 
   return (
-    <main className="min-h-screen bg-zinc-950 text-white px-4 pt-16 pb-20">
+    <main className="min-h-screen bg-zinc-950 text-white px-3 sm:px-4 pt-20 sm:pt-24 pb-16 sm:pb-20">
       <div className="max-w-2xl mx-auto">
-        <div className="flex items-center justify-between mb-8">
-          <h1 className="text-2xl font-bold">Community Stacks</h1>
+        <div className="flex items-center justify-between mb-6 sm:mb-8">
+          <h1 className="text-xl sm:text-2xl font-bold">Community Stacks</h1>
           <div className="flex gap-2 text-sm">
             <a
               href="/feed"

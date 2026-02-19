@@ -1,41 +1,37 @@
 import { auth } from "@/lib/auth";
 import Link from "next/link";
+import { UserMenu } from "./UserMenu";
 
 export async function Navbar() {
   const session = await auth();
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-zinc-950/80 backdrop-blur border-b border-zinc-800">
-      <div className="max-w-2xl mx-auto px-4 h-14 flex items-center justify-between">
-        <Link href="/" className="font-bold text-white tracking-tight">
+    <nav className="fixed top-0 left-0 right-0 z-50 bg-black/30 backdrop-blur-xl border-b border-white/5">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 h-14 sm:h-16 flex items-center justify-between">
+        <Link href="/" className="text-base sm:text-lg font-bold text-white tracking-tight">
           Stack Matcher
         </Link>
-        <div className="flex items-center gap-4 text-sm">
+        <div className="flex items-center gap-4 sm:gap-10 text-sm">
           <Link href="/feed" className="text-zinc-400 hover:text-white transition-colors">
-            Feed
+            Community
           </Link>
           {session ? (
-            <div className="flex items-center gap-2">
-              {session.user?.image && (
-                <img
-                  src={session.user.image}
-                  alt="avatar"
-                  className="w-7 h-7 rounded-full"
-                />
-              )}
+            session.user?.image ? (
+              <UserMenu image={session.user.image} />
+            ) : (
               <a
-                href="/api/auth/signout"
-                className="text-zinc-500 hover:text-zinc-300 text-xs"
+                href="/auth/signout"
+                className="text-zinc-400 hover:text-white text-sm transition-colors"
               >
                 Sign out
               </a>
-            </div>
+            )
           ) : (
             <a
               href="/api/auth/signin"
-              className="bg-zinc-800 hover:bg-zinc-700 text-white px-3 py-1.5 rounded-lg text-xs transition-colors"
+              className="bg-white text-black px-3 py-1 rounded-full text-xs font-medium hover:bg-zinc-200 transition-colors"
             >
-              Sign in with GitHub
+              Sign in
             </a>
           )}
         </div>

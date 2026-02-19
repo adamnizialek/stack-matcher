@@ -3,10 +3,11 @@ import { prisma } from "@/lib/prisma";
 
 export async function GET(
   _req: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
+  const { id } = await params;
   const recommendation = await prisma.recommendation.findUnique({
-    where: { id: params.id },
+    where: { id },
     include: {
       user: { select: { name: true, image: true } },
       votes: true,
