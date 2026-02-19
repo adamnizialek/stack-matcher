@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { StackCard } from "./StackCard";
 import { MermaidDiagram } from "./MermaidDiagram";
@@ -11,7 +11,58 @@ export function RecommendForm() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [result, setResult] = useState<{ id: string; aiResponse: AiResponse } | null>(null);
+  const [listening, setListening] = useState(false);
+  const recognitionRef = useRef<SpeechRecognition | null>(null);
   const router = useRouter();
+
+  const toggleListening = useCallback(() => {
+    if (listening) {
+      recognitionRef.current?.stop();
+      return;
+    }
+
+    const SpeechRecognition =
+      window.SpeechRecognition || window.webkitSpeechRecognition;
+
+    if (!SpeechRecognition) {
+      setError("Speech recognition is not supported in this browser. Try Chrome or Edge.");
+      return;
+    }
+
+    const recognition = new SpeechRecognition();
+    recognition.continuous = true;
+    recognition.interimResults = false;
+    recognition.lang = "en-US";
+
+    recognition.onresult = (event: SpeechRecognitionEvent) => {
+      let transcript = "";
+      for (let i = event.resultIndex; i < event.results.length; i++) {
+        if (event.results[i].isFinal) {
+          transcript += event.results[i][0].transcript;
+        }
+      }
+      if (transcript) {
+        setDescription((prev) => (prev ? prev + " " + transcript.trim() : transcript.trim()));
+      }
+    };
+
+    recognition.onerror = (event: SpeechRecognitionErrorEvent) => {
+      if (event.error !== "aborted") {
+        setError("Mic error: " + event.error);
+      }
+      setListening(false);
+    };
+
+    recognition.onend = () => {
+      setListening(false);
+      recognitionRef.current = null;
+    };
+
+    recognitionRef.current = recognition;
+    recognition.start();
+    setListening(true);
+    setError(null);
+  }, [listening]);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -53,7 +104,40 @@ export function RecommendForm() {
             disabled={loading}
           />
           {error && <p className="text-red-400 text-sm mt-1">{error}</p>}
-          <div className="flex items-center justify-end mt-3 pt-3 border-t border-white/5">
+          <div className="flex items-center justify-end gap-2 mt-3 pt-3 border-t border-white/5">
+            <button
+              type="button"
+              onClick={toggleListening}
+              disabled={loading}
+              className={`relative w-9 h-9 flex items-center justify-center rounded-full transition-all disabled:opacity-30 disabled:cursor-not-allowed ${
+                listening
+                  ? "bg-red-500/20 text-red-400 hover:bg-red-500/30"
+                  : "bg-white/5 text-zinc-400 hover:bg-white/10 hover:text-white"
+              }`}
+              title={listening ? "Stop listening" : "Voice input"}
+            >
+              {listening ? (
+                <>
+                  <span className="absolute inset-0 rounded-full bg-red-500/20 animate-ping" />
+                  <span className="relative w-2.5 h-2.5 bg-red-500 rounded-full" />
+                </>
+              ) : (
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth={2}
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="w-4 h-4"
+                >
+                  <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z" />
+                  <path d="M19 10v2a7 7 0 0 1-14 0v-2" />
+                  <line x1="12" x2="12" y1="19" y2="22" />
+                </svg>
+              )}
+            </button>
             <button
               type="submit"
               disabled={loading || description.trim().length < 10}
