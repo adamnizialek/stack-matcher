@@ -1,6 +1,9 @@
 import OpenAI from "openai";
 
-const client = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+const client = new OpenAI({
+  apiKey: process.env.GROQ_API_KEY,
+  baseURL: "https://api.groq.com/openai/v1",
+});
 
 export interface StackItem {
   name: string;
@@ -29,7 +32,7 @@ export async function generateStackRecommendation(
   description: string
 ): Promise<AiResponse> {
   const response = await client.chat.completions.create({
-    model: "gpt-4o-mini",
+    model: "llama-3.3-70b-versatile",
     messages: [
       { role: "system", content: SYSTEM_PROMPT },
       { role: "user", content: `Project: ${description}` },
