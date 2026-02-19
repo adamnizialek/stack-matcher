@@ -31,8 +31,9 @@ export async function POST(req: Request) {
     return NextResponse.json(recommendation);
   } catch (error) {
     console.error("Recommend error:", error);
+    const message = error instanceof Error ? error.message : "Unknown error";
     return NextResponse.json(
-      { error: "Failed to generate recommendation" },
+      { error: `Failed to generate recommendation: ${message}` },
       { status: 500 }
     );
   }
