@@ -104,7 +104,7 @@ export function RecommendForm() {
             disabled={loading}
           />
           {error && <p className="text-red-400 text-sm mt-1">{error}</p>}
-          <div className="flex items-center justify-end gap-2 mt-3 pt-3 border-t border-white/5">
+          <div className="flex items-center justify-between mt-3 pt-3 border-t border-white/5">
             <button
               type="button"
               onClick={toggleListening}
