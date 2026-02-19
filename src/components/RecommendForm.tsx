@@ -80,14 +80,19 @@ export function RecommendForm() {
                 <StackCard key={item.name} item={item} />
               ))}
             </div>
-            <p className="text-zinc-300 text-sm leading-relaxed mb-4">
-              {result.aiResponse.summary}
-            </p>
-            {result.aiResponse.alternatives?.length > 0 && (
-              <p className="text-zinc-500 text-xs">
-                Alternatives: {result.aiResponse.alternatives.join(", ")}
+            <div className="bg-white/5 border border-white/10 rounded-xl p-4 mb-4">
+              <p className="text-zinc-300 text-sm leading-relaxed">
+                {result.aiResponse.summary}
               </p>
-            )}
+              {result.aiResponse.alternatives?.length > 0 && (
+                <div className="flex flex-wrap gap-2 mt-3 pt-3 border-t border-white/5">
+                  <span className="text-zinc-500 text-xs">Alternatives:</span>
+                  {result.aiResponse.alternatives.map((alt) => (
+                    <span key={alt} className="text-xs text-zinc-400 bg-white/5 px-2 py-0.5 rounded-full">{alt}</span>
+                  ))}
+                </div>
+              )}
+            </div>
             {result.aiResponse.diagram && (
               <MermaidDiagram chart={result.aiResponse.diagram} />
             )}

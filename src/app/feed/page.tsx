@@ -22,7 +22,7 @@ export default async function FeedPage({ searchParams }: Props) {
   });
 
   return (
-    <main className="min-h-screen bg-zinc-950 text-white px-3 sm:px-4 pt-20 sm:pt-24 pb-16 sm:pb-20">
+    <main className="min-h-screen bg-zinc-950 text-white px-5 sm:px-4 pt-20 sm:pt-24 pb-16 sm:pb-20">
       <div className="max-w-2xl mx-auto">
         <div className="flex items-center justify-between mb-6 sm:mb-8">
           <h1 className="text-xl sm:text-2xl font-bold">Community Stacks</h1>
