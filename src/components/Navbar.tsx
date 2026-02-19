@@ -7,11 +7,11 @@ export async function Navbar() {
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-black/30 backdrop-blur-xl border-b border-white/5">
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 h-14 sm:h-16 flex items-center justify-between">
+      <div className="w-full pl-2 pr-4 sm:pl-4 sm:pr-6 h-14 sm:h-16 flex items-center justify-between">
         <Link href="/" className="text-base sm:text-lg font-bold text-white tracking-tight">
           Stack Matcher
         </Link>
-        <div className="flex items-center gap-4 sm:gap-10 text-sm">
+        <div className="flex items-center gap-4 sm:gap-8 text-sm sm:text-base">
           <Link href="/feed" className="text-zinc-400 hover:text-white transition-colors">
             Community
           </Link>
@@ -29,7 +29,7 @@ export async function Navbar() {
           ) : (
             <a
               href="/api/auth/signin"
-              className="bg-white text-black px-3 py-1 rounded-full text-xs font-medium hover:bg-zinc-200 transition-colors"
+              className="bg-white text-black px-3 py-1 sm:px-5 sm:py-2 rounded-full text-xs sm:text-sm font-medium hover:bg-zinc-200 transition-colors"
             >
               Sign in
             </a>
